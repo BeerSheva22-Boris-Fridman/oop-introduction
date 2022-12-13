@@ -45,6 +45,8 @@ class ShapeTests {
 		RightTriangle tringle = new RightTriangle(5);
 		displayStrings(tringle.presentation(20));
 	}
+
+
 }
 
 
