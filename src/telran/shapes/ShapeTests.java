@@ -46,7 +46,16 @@ class ShapeTests {
 		displayStrings(tringle.presentation(20));
 	}
 
+	@Test
+	void cipherTest() {
+		BaseCipher basecipher = new BaseCipher(2);
+		int number = 10;	
+		System.out.println("cipher: " + basecipher.cipher(number));
+		System.out.println("decipher num: " + basecipher.deCipher((basecipher.cipher(number))));
+		assertEquals(number, basecipher.deCipher((basecipher.cipher(number))));
+	}
+	
 
-}
+	}
 
 
