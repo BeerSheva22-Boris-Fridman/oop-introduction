@@ -1,5 +1,7 @@
 package telran.shapes;
 
+import org.junit.jupiter.api.Disabled;
+
 public class BaseCipher {
 	private static final char MAX_VALUE = 126;
 	private static final char MIN_VALUE = 33;
@@ -41,27 +43,24 @@ public class BaseCipher {
 	}
 
 	public String cipher(int numberForCipher) {
-		String res;
-	
 		char[] tempCipherdNumber = new char[GetNumberOfCipheredSymbol(numberForCipher)];
 		for (int i = 0; i < tempCipherdNumber.length; i++) {
-			tempCipherdNumber[i] = (char) (numberForCipher % lenghtOfKey);
+			tempCipherdNumber[i] = key.charAt(numberForCipher % lenghtOfKey);
 			numberForCipher /= lenghtOfKey;
 		}
-		//char[] reversedArray = reverse(tempCipherdNumber);
-		res = String.valueOf(tempCipherdNumber);
-		return res;
+		char[] reversedArray = reverse(tempCipherdNumber);
+		return String.valueOf(reversedArray);
 	}
 
-//private char[] reverse(char[] tempCipherdNumber) {
-//	char[] newArray = new char[tempCipherdNumber.length];
-//
-//    for (int i = 0; i < newArray.length; i++) {
-//        newArray[newArray.length - 1 - i] = tempCipherdNumber[i];
-//    }
-//
-//    return newArray;
-//	}
+private char[] reverse(char[] tempCipherdNumber) {
+	char[] newArray = new char[tempCipherdNumber.length];
+
+    for (int i = 0; i < newArray.length; i++) {
+        newArray[newArray.length - 1 - i] = tempCipherdNumber[i];
+    }
+
+    return newArray;
+	}
 
 private int GetNumberOfCipheredSymbol(int number) {
 	int res = 0;

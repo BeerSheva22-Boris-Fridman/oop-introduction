@@ -50,8 +50,8 @@ class ShapeTests {
 
 	@Test
 	void cipherTest() {
-		BaseCipher BaseCipher = new BaseCipher(2);
-		int number = 10;	
+		BaseCipher BaseCipher = new BaseCipher(12);
+		int number = 5568926;	
 		System.out.println("cipher: " + BaseCipher.cipher(number));
 		System.out.println("decipher num: " + BaseCipher.deCipher((BaseCipher.cipher(number))));
 		assertEquals(number, BaseCipher.deCipher((BaseCipher.cipher(number))));
