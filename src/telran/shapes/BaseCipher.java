@@ -76,7 +76,7 @@ public int deCipher (String cipherdNumber) {
 int res = 0;
 for (int i = 0; i < cipherdNumber.length(); i++) {
 	char symbol = cipherdNumber.charAt(i);
-	res = (int) (key.indexOf(symbol) * Math.pow(lenghtOfKey, cipherdNumber.length() - 1 - i)); 
+	res += (int) (key.indexOf(symbol) * Math.pow(lenghtOfKey, cipherdNumber.length() - 1 - i)); 
 }
 return res;
 }

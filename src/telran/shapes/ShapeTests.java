@@ -36,11 +36,13 @@ class ShapeTests {
 	}
 
 	@Test
+	@Disabled
 	void triangleTest() {
 		LeftTriangle tringle = new LeftTriangle(10); 
 		displayStrings(tringle.presentation(20));
 	}
 	@Test
+	@Disabled
 	void triangleRightTest() {
 		RightTriangle tringle = new RightTriangle(5);
 		displayStrings(tringle.presentation(20));
@@ -51,7 +53,7 @@ class ShapeTests {
 		BaseCipher BaseCipher = new BaseCipher(2);
 		int number = 10;	
 		System.out.println("cipher: " + BaseCipher.cipher(number));
-		System.out.println("decipher num: " + BaseCipher.deCipher((basecipher.cipher(number))));
+		System.out.println("decipher num: " + BaseCipher.deCipher((BaseCipher.cipher(number))));
 		assertEquals(number, BaseCipher.deCipher((BaseCipher.cipher(number))));
 	}
 	
