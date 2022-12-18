@@ -28,5 +28,8 @@ public static final String SYMBOL = "*";
 		this.width = width;
 		this.height = height;
 	}
-	abstract public String[] presentation(int offset) ;
+	protected String getOffset(int offset) {
+		return " ".repeat(offset);
+	}
+	abstract public String[] presentation_row(int offset) ;
 }

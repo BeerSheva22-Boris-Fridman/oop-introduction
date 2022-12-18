@@ -7,7 +7,7 @@ public class Rectangle extends Shape{
 		super(width, height);
 	}
 	
-	public String[] presentation(int offset) {
+	public String[] presentation_row(int offset) {
 		int height = getHeight();
 		String res[] = new String[height];
 		String line = getLine(offset);
@@ -26,7 +26,7 @@ public class Rectangle extends Shape{
 	protected String getLine(int offset) {
 		return getOffset(offset) + symbol.repeat(getWidth());
 	}
-	protected String getOffset(int offset) {
+	public String getOffset(int offset) {
 		
 		return " ".repeat(offset);
 	}
