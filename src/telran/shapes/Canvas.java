@@ -21,7 +21,7 @@ public class Canvas extends Shape {
 	public String[] presentation_row(int offset) {
 		for (Shape shape: shapes) {
 			if (shape instanceof Canvas) {
-				((Canvas)shape).setDirection(direction);
+				((Canvas)shape).setDirection(direction); 
 			}
 		}
 		return direction.equals("row") ? presentationInRow(offset) : presentationInColumn(offset);
