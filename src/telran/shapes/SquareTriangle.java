@@ -9,7 +9,7 @@ public class SquareTriangle extends Square {
 
 	}
 
-	public String[] presentation_row(int offset) {
+	public String[] presentation(int offset) {
 		String[] res = new String[getWidth()];
 		char[][] charMatrix = getVerticalLine();
 		addDiagonalLine(charMatrix);

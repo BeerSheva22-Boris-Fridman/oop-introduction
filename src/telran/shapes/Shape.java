@@ -31,5 +31,5 @@ public static final String SYMBOL = "*";
 	protected String getOffset(int offset) {
 		return " ".repeat(offset);
 	}
-	abstract public String[] presentation_row(int offset) ;
+	abstract public String[] presentation(int offset) ;
 }

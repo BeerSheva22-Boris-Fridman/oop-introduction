@@ -20,9 +20,9 @@ class ShapeTests {
 		Rectangle rectangle = new Rectangle(20, 5);
 		assertEquals(20, rectangle.getWidth());
 		assertEquals(5, rectangle.getHeight());
-		displayStrings(rectangle.presentation_row(20));
+		displayStrings(rectangle.presentation(20));
 		rectangle.setSymbol("#");
-		displayStrings(rectangle.presentation_row(20));
+		displayStrings(rectangle.presentation(20));
 	}
 
 	@Test
@@ -31,9 +31,9 @@ class ShapeTests {
 		Square square = new Square(3);
 		assertEquals(3, square.getWidth());
 		assertEquals(3, square.getHeight());
-		displayStrings(square.presentation_row(10));
+		displayStrings(square.presentation(10));
 		square.setSymbol("#");
-		displayStrings(square.presentation_row(20));
+		displayStrings(square.presentation(20));
 	}
 
 	private void displayStrings(String strings[]) {
@@ -46,13 +46,13 @@ class ShapeTests {
 	@Disabled
 	void triangleTest() {
 		LeftTriangle tringle = new LeftTriangle(10); 
-		displayStrings(tringle.presentation_row(20));
+		displayStrings(tringle.presentation(20));
 	}
 	@Test
 	@Disabled
 	void triangleRightTest() {
 		RightTriangle tringle = new RightTriangle(5);
-		displayStrings(tringle.presentation_row(20));
+		displayStrings(tringle.presentation(20));
 	}
 
 	@Test
@@ -72,22 +72,22 @@ class ShapeTests {
 				canvas, new Square(10) };
 	
 	@Test
-	@Disabled
+	//@Disabled
 	void canvasInRowTest() {
 		Canvas canvas = new Canvas(10, 4, shapes);
 		canvas.setMargin(3);
-		displayStrings(canvas.presentation_row(2));
+		displayStrings(canvas.presentation(2));
 
 	}
 
 	@Test
-	// @Disabled
+	@Disabled
 	void canvasInColumnTest() {
 		Canvas canvas = new Canvas(10, 4, shapes);
 		canvas.setDirection("column");
 		this.canvas.setDirection("column");
 		canvas.setMargin(1);
-		displayStrings(canvas.presentation_row(2)); 
+		displayStrings(canvas.presentation(2)); 
 
 	}
 
