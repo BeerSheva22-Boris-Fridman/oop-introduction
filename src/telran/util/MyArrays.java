@@ -103,17 +103,13 @@ public class MyArrays {
 
 		boolean[] check = new boolean[array.length];
 		T[] res = (T[]) new Object[array.length];
-		res[0] = array[0];
-		int index = 1;
-		for (int i = 1; i < array.length; i++) {
-			
-
+		int index = 0;
+		for (int i = 0; i < array.length; i++) {
 			if (!contains(res, array[i])) {
-				res[index] = array[i];
-				index++;
+				res[index++] = array[i];
 			}
 		}
-		res = removeIf(res, new isNullPredicate <T> ());
+		res = removeIf(res, new isNullPredicate<T>());
 		return res;
 	}
 
@@ -122,8 +118,9 @@ public class MyArrays {
 			if (pattern == null && element == null) {
 				return true;
 			}
-			if (element != null && element.equals(pattern)) { // если в массиве есть значение, то нам достаточно найти хотя бы одно такое
-										// значение при этом возвращаем тру
+			if (element != null && element.equals(pattern)) { // если в массиве есть значение, то нам достаточно найти
+																// хотя бы одно такое
+				// значение при этом возвращаем тру
 				return true;
 			} // если в массиве нет значения, то нам нужно проверить каждый элемент. Если ни
 				// один из них не содержит нужное, то вернем фолс
