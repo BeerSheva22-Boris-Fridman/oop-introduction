@@ -3,6 +3,7 @@ package telran.util;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Predicate;
+import telran.util.test.isNullPredicate;
 
 public class MyArrays {
 	static public <T> void sort(T[] objects, Comparator<T> comparator) {
@@ -81,19 +82,47 @@ public class MyArrays {
 //	res = MyArrays.filter(array, temp);
 //	return res;
 
-		return MyArrays.filter(array, predicate.negate());
+		return filter(array, predicate.negate());
 
 	}
 
 	public static <T> T[] removeRepeated(T[] array) {
-		// TODO
-		// try to write this method based on removeIf
-		return null;
+		// 1. наполнить массив чек значениями тру на тех индексах где находятся
+		// повторяющиеся элементы в массиве аррей
+		// 2. посчитать количество фолсов, таким образом поймем длинну массива рез
+		// 3. переписываем из массива аррей в рез элементы с фолсами в чеке.
+		// 4. возвращаем результат
+		// вывод- не получилось, так как метод контейнс проверяет весь массив, а не с
+		// конкретного индекса
+		// 1. проверяем есть ли в массиве рес элемент из массива аррей
+		// 2. если отсутствует, то переписываем из массива аррей в рес, если нет, то
+		// переходим к следующему элементу и проводим такуюже операцию
+		// 3. если индекс (переменная которая подсчитывает количество переданных
+		// элементов) массива рез равна длинне массива аррей, то возращаем результат, в
+		// противном случае убираем нулевые элементы и возвращаем результат
+
+		boolean[] check = new boolean[array.length];
+		T[] res = (T[]) new Object[array.length];
+		res[0] = array[0];
+		int index = 1;
+		for (int i = 1; i < array.length; i++) {
+			
+
+			if (!contains(res, array[i])) {
+				res[index] = array[i];
+				index++;
+			}
+		}
+		res = removeIf(res, new isNullPredicate <T> ());
+		return res;
 	}
 
 	public static <T> boolean contains(T[] array, T pattern) {
 		for (T element : array) {
-			if (element == pattern) { // если в массиве есть значение, то нам достаточно найти хотя бы одно такое
+			if (pattern == null && element == null) {
+				return true;
+			}
+			if (element != null && element.equals(pattern)) { // если в массиве есть значение, то нам достаточно найти хотя бы одно такое
 										// значение при этом возвращаем тру
 				return true;
 			} // если в массиве нет значения, то нам нужно проверить каждый элемент. Если ни

@@ -88,11 +88,28 @@ class MyArraysTest {
 		String[] empty = {""};
 		String[] withoutPattern = { "a","b","ab","am","bm"};
 		String[] withNull = { "a","b","ab","am","bm", null};
-		MyArrays.contains(strings, subStr);	
+		
 		assertEquals(true, MyArrays.contains(strings, subStr));
 		assertEquals(false, MyArrays.contains(empty, subStr));
 		assertEquals(false, MyArrays.contains(withoutPattern, subStr));
 		assertEquals(false, MyArrays.contains(withoutPattern, null));
 		assertEquals(true, MyArrays.contains(withNull, null));
+	}
+	@Test
+	void removeRepeatedTest() {
+		
+		String[] strings = { "a", "b", "b", "ab", "am", "bm" };
+		String[] expected = { "a", "b", "ab", "am", "bm" };
+		
+		assertArrayEquals(expected, MyArrays.removeRepeated(strings));
+		
+	}
+	@Test
+	void isNullPredicateTest() {
+		
+		String[] strings = { "a", "b", "b", "ab", "am", "bm", null};
+		String[] expected = { "a", "b", "b", "ab", "am", "bm" };
+		MyArrays.removeIf(strings, new isNullPredicate <String> ());
+		assertArrayEquals(expected, MyArrays.removeIf(strings, new isNullPredicate <String> ()));
 	}
 }
