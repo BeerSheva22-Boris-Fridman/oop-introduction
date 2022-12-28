@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import telran.util.MyArrays;
 
 class MyArraysTest {
+	static final int  N_NUMBERS = 10000;
+	static final int N_RUNS = 1000;
 	Integer numbers[] = { 13, 2, -8, 47, 100, 10, -7, 7 };
 	String strings[] = { "ab", "abm", "abmb", "abmbc" };
 	Comparator<Integer> evenOddComparator = this::evenOddCompare;
@@ -111,5 +113,25 @@ class MyArraysTest {
 		String[] expected = { "a", "b", "b", "ab", "am", "bm" };
 		MyArrays.removeIf(strings, new isNullPredicate <String> ());
 		assertArrayEquals(expected, MyArrays.removeIf(strings, new isNullPredicate <String> ()));
+	}
+	@Test
+	void joinFunctionalTest() {
+		
+		String expected = "13,2,-8,47,100,10,-7,7,13,47,7,-7";
+		assertEquals(expected, MyArrays.join(numbers, ","));
+	}
+	@Test
+	void joinPerformanceTest() {
+		Integer [] largeArray = getLargeNumbersArray();
+		for (int i = 0; i < N_RUNS; i++)
+			MyArrays.join(largeArray,",");
+	
+		
+	}
+
+	Integer[] getLargeNumbersArray() {
+		Integer[] res = new Integer [N_NUMBERS];
+		Arrays.fill(res, 1000);
+		return res;
 	}
 }

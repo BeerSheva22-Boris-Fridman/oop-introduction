@@ -100,9 +100,8 @@ public class MyArrays {
 		// 3. если индекс (переменная которая подсчитывает количество переданных
 		// элементов) массива рез равна длинне массива аррей, то возращаем результат, в
 		// противном случае убираем нулевые элементы и возвращаем результат
-
-		boolean[] check = new boolean[array.length];
-		T[] res = (T[]) new Object[array.length];
+		T[] res = Arrays.copyOf(array,array.length);
+		Arrays.fill(res, null);
 		int index = 0;
 		for (int i = 0; i < array.length; i++) {
 			if (!contains(res, array[i])) {
@@ -126,5 +125,26 @@ public class MyArrays {
 				// один из них не содержит нужное, то вернем фолс
 		}
 		return false;
+	}
+	public static <T> String join(T[] array, String delimiter) {
+		String res = "";
+		if (array.length > 0) {
+			StringBuilder builder = new StringBuilder(array[0].toString());
+			for (int i = 1; i < array.length; i ++) {
+				builder.append(delimiter).append(array[i]);
+			}
+			res = builder.toString();
+		}
+		return res;
+	}
+	public static <T> String joinString(T[] array, String delimiter) {
+		String res = "";
+		if (array.length > 0) {
+			res = array[0].toString();
+			for (int i = 1; i < array.length; i ++) {
+				res += delimiter + array[i];
+			}
+		}
+		return res;
 	}
 }
