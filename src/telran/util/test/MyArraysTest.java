@@ -10,12 +10,13 @@ import org.junit.Ignore;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import telran.util.ArrayList;
 import telran.util.MyArrays;
 
 class MyArraysTest {
-	static final int  N_NUMBERS = 10000;
+	Integer numbers[] = {13, 2, -8, 47, 100, 10, -7, 7, 13, 47, 7, -7};
+	static final int N_NUMBERS = 10000;
 	static final int N_RUNS = 1000;
-	Integer numbers[] = { 13, 2, -8, 47, 100, 10, -7, 7 };
 	String strings[] = { "ab", "abm", "abmb", "abmbc" };
 	Comparator<Integer> evenOddComparator = this::evenOddCompare;
 
@@ -31,10 +32,10 @@ class MyArraysTest {
 	}
 
 	@Test
-
+	
 	void evenOddTest() {
-
-		Integer expected[] = { -8, 2, 10, 100, 47, 13, 7, -7 };
+		
+		Integer expected[] = {-8, 2, 10, 100, 47, 47, 13, 13, 7, 7, -7, -7};
 		MyArrays.sort(numbers, evenOddComparator);
 		assertArrayEquals(expected, numbers);
 	}
@@ -134,4 +135,28 @@ class MyArraysTest {
 		Arrays.fill(res, 1000);
 		return res;
 	}
+	@Test
+	void removeListTest() {
+		boolean delite = true;
+		boolean notRepeatedPattern = false;
+		ArrayList <Integer> test = new ArrayList<Integer>(2);
+		test.add(1);
+		test.add(2);
+		test.add(4);
+		test.add(3);
+		test.add(4);
+		assertEquals(delite, test.remove((Integer) 4));
+		assertEquals(notRepeatedPattern, test.remove((Integer)7));
+}
+	@Test
+	void indexOfTest() {
+		int patternIndex = 1;
+		int noPattern = -1;
+		ArrayList <Integer> test = new ArrayList<Integer>(2);
+		test.add(2);
+		test.add(9);
+		assertEquals(patternIndex, test.indexOf(9));
+		assertEquals(noPattern, test.indexOf(10));
+		
+}
 }

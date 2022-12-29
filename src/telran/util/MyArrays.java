@@ -108,8 +108,9 @@ public class MyArrays {
 				res[index++] = array[i];
 			}
 		}
-		res = removeIf(res, new isNullPredicate<T>());
-		return res;
+		//res = removeIf(res, new isNullPredicate<T>());
+		//return res;
+		return Arrays.copyOf(res, index);
 	}
 
 	public static <T> boolean contains(T[] array, T pattern) {
