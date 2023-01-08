@@ -2,13 +2,14 @@ package telran.util;
 
 import java.util.function.Predicate;
 
-public interface Collection<T> {
+public interface Collection<T>  extends Iterable <T> {
 boolean add (T element);
 boolean remove (T pattern);
 boolean removeIf(Predicate<T> predicate);
 boolean isEmpty();
 int size();
 boolean contains (T pattern);
+
 /****************************/
 /**
  * 
