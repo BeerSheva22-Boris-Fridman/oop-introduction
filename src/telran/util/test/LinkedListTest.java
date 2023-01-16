@@ -1,47 +1,57 @@
 package telran.util.test;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.Iterator;
-
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-
+import org.junit.jupiter.api.Test;
 
 import telran.util.*;
 
-class LinkedListTest extends ListTest{
+class LinkedListTest extends ListTest {
+	LinkedList<Integer> linkedList;
+
 	@BeforeEach
-	@Override 
+	@Override
 	void setUp() throws Exception {
 		collection = new LinkedList<>();
 		super.setUp();
+		linkedList = (LinkedList<Integer>) list;
+
 	}
+
 	@Test
-	public void indexOfTest () {
-		LinkedList <String> list = new LinkedList <String> ();
-		list.add("one");
-		list.add(null);
-		list.add("two");
-		list.add("three");
-		list.add("two");
-		
-		assertEquals(2, list.indexOf("two"));
+	void testLoop() {
+		LinkedList<Integer> list1 = new LinkedList<>(collection);
+		assertFalse(list1.hasLoop());
+		list1.setNext(6, 0);
+		assertTrue(list1.hasLoop());
 	}
+
 	@Test
-	public void iteratorTest () {
-		LinkedList <String> list = new LinkedList <String> ();
-		Iterator<String> itr = list.iterator(); 
-		assertEquals(false, itr.hasNext()); 
-		list.add("one");
-		assertEquals(true, itr.hasNext());
-		assertEquals("one", itr.next());
-		list.add("two");
-		assertEquals("two", itr.next());
-		list.add("three");
-		assertEquals("three", itr.next());
-		assertEquals(false, itr.hasNext());
+	void isLoopTestEven() {
+		list.add(300);
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(list.size() - 1, 0);
+		assertTrue(linkedList.hasLoop());
+
+	}
+
+	@Test
+	void isLoopTestOdd() {
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(list.size() - 1, 0);
+		assertTrue(linkedList.hasLoop());
+
+	}
+
+	@Test
+	void isLoopNoOneNode() {
+		LinkedList<Integer> linkedList = new LinkedList<>();
+		assertFalse(linkedList.hasLoop());
+		linkedList.add(10);
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(0, 0);
+		assertTrue(linkedList.hasLoop());
 	}
 }

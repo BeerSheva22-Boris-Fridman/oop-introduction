@@ -3,114 +3,75 @@ package telran.util;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 
-public class ArrayList<T> implements List<T> {
+public class ArrayList<T> extends AbstractCollection<T> implements List<T> {
 	static final int DEFAULT_CAPACITY = 16;
-private T [] array;
-private int size;
-private class ArrayListIterator implements Iterator<T> {
-int current = 0;
-	@Override
-	public boolean hasNext() {
-		
-		return current < size;
+	private T[] array;
+
+	private class ArrayListIterator implements Iterator<T> {
+		private int index = 0;
+		private boolean flNext;
+
+		@Override
+		public boolean hasNext() {
+			return index < size;
+		}
+
+		@Override
+		public T next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			flNext = true;
+			return array[index++];
+		}
+
+		@Override
+		public void remove() {
+			if (!flNext) {
+				throw new IllegalStateException();
+			}
+			ArrayList.this.remove(--index);
+			flNext = false;
+		}
 	}
 
-	@Override
-	public T next() {
-		if(!hasNext()) {
-			throw new NoSuchElementException();
-		}
-		return array[current++];
+	@SuppressWarnings("unchecked")
+	public ArrayList(int capacity) {
+		array = (T[]) new Object[capacity];
 	}
-	
-}
-@SuppressWarnings("unchecked")
-public ArrayList(int capacity) {
-	array = (T[])new Object[capacity];
-}
-public ArrayList() {
-	this(DEFAULT_CAPACITY);
-}
+
+	public ArrayList() {
+		this(DEFAULT_CAPACITY);
+	}
+
+	public ArrayList(Collection<T> collection) {
+		this(collection.size());
+		for (T item : collection) {
+			this.add(item);
+		}
+	}
+
 	@Override
 	public boolean add(T element) {
-		if(size == array.length) {
-			reallocate();
-		}
+		checkSize();
 		array[size++] = element;
 		return true;
 	}
+
+	public void checkSize() {
+		if (size == array.length) {
+			reallocate();
+		}
+	}
+
 	private void reallocate() {
 		array = Arrays.copyOf(array, array.length * 2);
 	}
 
 	@Override
-	public boolean remove(T pattern) {
-		boolean res = false;
-		int index = indexOf(pattern);
-		if (index > -1) {
-			res = true;
-			remove(index);
-		}
-		return res;
-	}
-
-	@Override
-	public boolean removeIf(Predicate<T> predicate) {
-		int oldSize = size;
-		int tIndex = 0;
-		for (int i = 0; i < oldSize; i++) {
-			if (predicate.test(array[i])) {
-				size--;
-			} else {
-				array[tIndex++] = array[i];
-			}
-		}
-		Arrays.fill(array, size, oldSize, null);
-		return oldSize > size;
-		
-	}
-
-	@Override
-	public boolean isEmpty() {
-		
-		return size == 0;
-	}
-
-	@Override
-	public int size() {
-		
-		return size;
-	}
-
-	
-
-	@Override
-	public T[] toArray(T[] ar) {
-		if(ar.length < size) {
-			ar = Arrays.copyOf(array, size);
-		}
-		System.arraycopy(array, 0, ar, 0, size);
-		Arrays.fill(ar, size, ar.length, null);
-		return ar;
-	}
-
-	@Override
-	public void add(int index, T element) {
-		checkIndex(index, true);
-		if (size == array.length) {
-			reallocate();
-		}
-		System.arraycopy(array, index, array, index + 1, size - index);
-		array[index] = element;
-		size++;
-
-	}
-
-	@Override
 	public T remove(int index) {
-		checkIndex(index, false);
+		checkIndex(index, 0, size - 1);
 		T res = array[index];
 		size--;
 		System.arraycopy(array, index + 1, array, index, size - index);
@@ -119,44 +80,79 @@ public ArrayList() {
 	}
 
 	@Override
-	public int indexOf(T pattern) {
-		int index = 0;
-		while(index < size && !isEqual(array[index], pattern)) {
-			index++;
+	public boolean remove(T item) {
+		int index = indexOf(item);
+		if (index > -1) {
+			remove(index);
 		}
-		return index < size ? index : -1;
+		return index > -1;
 	}
 
-	private boolean isEqual(T element, T pattern) {
-		
-		return element == null  ? element == pattern : element.equals(pattern);
+	@Override
+	public void add(int index, T element) {
+		checkIndex(index, 0, size);
+		checkSize();
+		System.arraycopy(array, index, array, index + 1, size - index);
+		size++;
+		array[index] = element;
 	}
+
+	@Override
+	public int indexOf(T pattern) {
+		int res = -1, i = 0;
+		while (i < size && res == -1) {
+			res = isEqual(array[i], pattern) ? i : res;
+			i++;
+		}
+		return res;
+	}
+
 	@Override
 	public int lastIndexOf(T pattern) {
-		int index = size - 1;
-		while(index >= 0 && !isEqual(array[index], pattern)) {
-			index--;
+		int res = -1, i = size - 1;
+		while (i > 0 && res == -1) {
+			res = isEqual(array[i], pattern) ? i : res;
+			i--;
 		}
-		return index;
+		return res;
 	}
 
 	@Override
 	public T get(int index) {
-		checkIndex(index, false);
+		checkIndex(index, 0, size - 1);
 		return array[index];
 	}
 
-	
 	@Override
 	public void set(int index, T element) {
-		checkIndex(index, false);
+		checkIndex(index, 0, size - 1);
 		array[index] = element;
-
 	}
+
 	@Override
 	public Iterator<T> iterator() {
-		
 		return new ArrayListIterator();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		boolean res = false;
+		ArrayList<T> other = (ArrayList<T>) obj;
+		res = size == other.size();
+		if (res) {
+			for (int i = 0; i < size; i++) {
+				res = get(i).equals(other.get(i));
+			}
+		}
+		return res;
 	}
 
 }
