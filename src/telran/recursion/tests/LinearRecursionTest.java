@@ -35,6 +35,12 @@ void sumTest() {
 	assertEquals(0, sum(new int[0]));
 }
 @Test
+void squareTest() {
+	assertEquals(1, square(1));
+	assertEquals(10000, square(100));
+	assertEquals(10000, square(-100));
+}
+@Test
 void reverseTest() {
 	int ar[] = {1, 2, 3, 4, 5, 6};
 	int expected[] = {6, 5, 4, 3, 2, 1};
@@ -44,5 +50,7 @@ void reverseTest() {
 	reverse (ar1);
 	assertArrayEquals(expected, ar);
 	assertArrayEquals(expected1, ar1);
+	
+	
 }
 }
