@@ -14,8 +14,6 @@ public class LinearRecursion {
 	}
 
 	static public int power(int a, int b) {
-
-		// your code cannot use cycles and *, / operators
 		if (b < 0) {
 			throw new IllegalArgumentException();
 		}
@@ -53,11 +51,6 @@ public class LinearRecursion {
 	}
 
 	public static long square(int x) {
-		// no cycles
-		// no * , / operators
-		// no additional functions
-		// no static fields
-		// (x-1)^2 = x^2 -2x + 1; => x^2 = (x-1)^2 + 2x -1
 		long res = 0;
 		if (x < 0) {
 			res = square(-x);
@@ -68,9 +61,7 @@ public class LinearRecursion {
 	}
 
 	public static void reverse(int ar[]) {
-		// no cycles
-		// no static fields
-		// TODO reversing elements of the source array
+
 		reverse(0, ar.length - 1, ar);
 	}
 
@@ -90,17 +81,10 @@ public class LinearRecursion {
 	}
 
 	public static boolean isSubstring(String str, String substr) {
-		// TODO write function
-		// returns true if a given 'substr' is indeed the substring of a given
-		// 'string'.
-		// Challenges: 1. To apply only following methods of the class String:
-		// charAt(int ind); String substring(int ind); int length();
-		// 2. No cycles;
 		boolean res = false;
 		if (str.length() >= substr.length()) {
 			res = isEqual(str, substr) ? true : isSubstring(str.substring(1), substr);
 		} 
-
 		return res;
 
 	}
@@ -112,7 +96,8 @@ public class LinearRecursion {
 		} else if (str.charAt(0) == substr.charAt(0)) {
 			res = isEqual(str.substring(1), substr.substring(1));
 		}
-		
 		return res;
 	}
+	
+	
 }
