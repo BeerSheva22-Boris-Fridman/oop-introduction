@@ -5,21 +5,37 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
+
 	private static final int DEFAULT_TABLE_SIZE = 16;
 	private static final float DEFAULT_FACTOR = 0.75f;
-	private List<T> [] hashTable;
+	private List<T>[] hashTable;
 	private float factor;
+
 	private class HashSetIterator implements Iterator<T> {
-		int current = 0;
-		int indexOfList = 0;
-		T currentElement = null;
-		List<T> currentList = null;
-		Iterator<T> itList = null;
-		boolean flNext = false;
-		int oldSIze = size();
+
+		int currentIt = 0;
+		Iterator<T>[] iterators;
+		Iterator<T> prevIt;
+		public HashSetIterator () {
+			getIterators();
+		}
+		
+		@SuppressWarnings("unchecked")
+		private void getIterators() {
+			iterators = new Iterator[hashTable.length];
+			int index = 0;
+			for (List<T> list: hashTable) {
+				if (list != null && list.iterator().hasNext()) {
+					iterators[index++] = list.iterator();
+				}
+			}
+			iterators = Arrays.copyOf(iterators, index);
+		}
+
 		@Override
 		public boolean hasNext() {
-			return current < oldSIze;
+			
+			return currentIt < iterators.length && iterators[iterators.length - 1].hasNext();
 		}
 
 		@Override
@@ -27,56 +43,42 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
-			currentElement = nextElement();
-			current++;
-			flNext = true;
-			return currentElement;
-		}
-
-		private T nextElement() {
-			if (currentList == null || !itList.hasNext()) {
-				currentList = nextList();
-				itList = currentList.iterator();
-			}
-			return itList.next();
-		}
-
-		private List<T> nextList() {
-			boolean fl = false;
-			List<T> res = null;
-			while (!fl && indexOfList < hashTable.length) {
-				if (hashTable[indexOfList] != null) {
-					res = hashTable[indexOfList];
-					fl = true;
-				}
-				indexOfList++;
+			Iterator<T> it = iterators[currentIt];
+			T res = it.next();
+			if (!it.hasNext()) {
+				currentIt++;
+				prevIt = it;
+			} else {
+				prevIt = null;
 			}
 			return res;
 		}
 
 		@Override
 		public void remove() {
-			if (!flNext) {
-				throw new IllegalStateException();
-			}
-			HashSet.this.remove(currentElement);
-			flNext = false;
+			Iterator<T> it = prevIt == null ? iterators[currentIt] : prevIt;
+			it.remove();
+			size--;
 		}
+
 	}
+
 	@SuppressWarnings("unchecked")
 	public HashSet(int tableSize, float factor) {
-		if(tableSize < 1) {
-			throw new IllegalArgumentException("Wrong initial size of Hash Table");
+		if (tableSize < 1) {
+			throw new IllegalArgumentException("Wrong initialsize of Hash Table");
 		}
-		if(factor < 0.3 || factor >1) {
+		if (factor < 0.3 || factor > 1) {
 			throw new IllegalArgumentException("Wrong factor value");
 		}
 		hashTable = new List[tableSize];
 		this.factor = factor;
 	}
+
 	public HashSet() {
 		this(DEFAULT_TABLE_SIZE, DEFAULT_FACTOR);
 	}
+
 	@Override
 	public boolean add(T element) {
 		if (size >= hashTable.length * factor) {
@@ -89,13 +91,12 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 			list = new LinkedList<>();
 			hashTable[index] = list;
 		}
+		list = hashTable[index];
 		if (!list.contains(element)) {
 			res = true;
 			list.add(element);
 			size++;
 		}
-		
-
 		return res;
 	}
 
@@ -103,18 +104,19 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 		HashSet<T> hashSet = new HashSet<>(hashTable.length * 2, factor);
 		for (List<T> list: hashTable) {
 			if (list != null) {
-				for(T obj: list) {
+				for (T obj: list) {
 					hashSet.add(obj);
 				}
 			}
 		}
 		hashTable = hashSet.hashTable;
-		
 	}
+
 	private int getHashIndex(T element) {
-		
+
 		return Math.abs(element.hashCode()) % hashTable.length;
 	}
+
 	@Override
 	public boolean remove(T pattern) {
 		int index = getHashIndex(pattern);
@@ -123,18 +125,13 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 			res = hashTable[index].remove(pattern);
 			if (res) {
 				size--;
-				if(hashTable[index].isEmpty()) {
+				if (hashTable[index].isEmpty()) {
 					hashTable[index] = null;
 				}
 			}
 		}
-		
 		return res;
 	}
-
-	
-
-	
 
 	@Override
 	public boolean contains(T pattern) {
@@ -148,10 +145,22 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		
+
 		return new HashSetIterator();
 	}
-	
-	
+	@Override
+	public T get(T pattern) {
+		T res = null;
+		List<T> list = hashTable[getHashIndex(pattern)];
+		if (list != null) {
+			T obj = null;
+			Iterator<T> it = list.iterator();
+			while(it.hasNext() && !isEqual(obj = it.next(), pattern)) { }
+			if (isEqual(obj, pattern)) {
+				res = obj;
+			}
+		}
+		return res;
+	}
 
 }

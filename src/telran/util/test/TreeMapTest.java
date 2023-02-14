@@ -2,15 +2,15 @@ package telran.util.test;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import telran.util.*;
+import telran.util.TreeMap;
 
-class ArrayListTest extends ListTest{
+public class TreeMapTest extends MapTest {
+	
 	@BeforeEach
-	@Override 
+	@Override
 	void setUp() throws Exception {
-		collection = new ArrayList<>(2);
+		map = new TreeMap<>();
 		super.setUp();
 	}
-	
-	
+
 }

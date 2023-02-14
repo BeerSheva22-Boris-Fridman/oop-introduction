@@ -3,27 +3,30 @@ package telran.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Range implements Iterable<Integer> {
+public class Range implements Iterable<Integer>, Comparable<Range> {
 	private static final String EXCEPTION_MESSAGE = "max value must be greater than min value";
 	int min;
 	int max;
-private class RangeIterator implements Iterator<Integer> {
-int current = min;
-	@Override
-	public boolean hasNext() {
+	
+	private class RangeIterator implements Iterator<Integer> {
+		int current = min;
+
+		@Override
+		public boolean hasNext() {
+			
+			return current < max;
+		}
+
+		@Override
+		public Integer next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			return current++;
+		}
 		
-		return current < max;
 	}
 
-	@Override
-	public Integer next() {
-		if (!hasNext()) {
-			throw new NoSuchElementException();
-		}
-		return current++;
-	}
-	
-}
 	@Override
 	public Iterator<Integer> iterator() {
 		
@@ -38,6 +41,7 @@ int current = min;
 		this.max = max;
 	}
 	public boolean checkNumber(int number) {
+		
 		return number >= min && number < max;
 	}
 
@@ -59,6 +63,13 @@ int current = min;
 		if (min >= max) {
 			throw new IllegalArgumentException(EXCEPTION_MESSAGE);
 		}
+	}
+
+	@Override
+	public int compareTo(Range o) {
+		int thisLength = max - min;
+		int oLength = o.max - o.min;
+		return Integer.compare(thisLength, oLength);
 	}
 
 }

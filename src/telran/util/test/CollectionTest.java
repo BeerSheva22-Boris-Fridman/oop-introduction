@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import telran.util.*;
@@ -30,7 +31,17 @@ public abstract class CollectionTest {
 	}
 
 	abstract void testAdd();
-	abstract void testIterator();
+//	abstract void testIterator();
+	@Test
+	void testIterator() {	
+		Integer actual[] = new Integer[numbers.length];
+		int index = 0;
+		Iterator<Integer> it = collection.iterator();
+		while(it.hasNext()) {
+			actual[index++] = it.next();
+		}
+		assertArrayEquals(numbers, actual);		
+	}
 	
 
 	@Test
@@ -53,6 +64,21 @@ public abstract class CollectionTest {
 		assertTrue(collection.removeIf(n -> true));
 		assertTrue(collection.isEmpty());
 		
+		
+	}
+	
+	@Test
+	@Disabled
+	void removeIfPerformanceTest() {
+
+		assertTrue(collection.removeIf(n -> true));
+		for (int i = 0; i < 200000; i++) {
+			collection.add(222);
+			collection.add(221);
+		}
+		assertEquals(400000, collection.size());
+		collection.removeIf(n -> n % 2 == 0);
+		assertEquals(200000, collection.size());
 	}
 
 	@Test
@@ -75,7 +101,6 @@ public abstract class CollectionTest {
 
 	@Test
 	void testToArray() {
-		
 		Arrays.fill(ar, 10);
 		assertTrue(ar == collection.toArray(ar));
 		Arrays.sort(ar,0, collection.size());
@@ -86,30 +111,28 @@ public abstract class CollectionTest {
 		}
 		for(int i = expected.length; i < ar.length; i++) {
 			assertNull(ar[i]);
-		}
-		
+		}	
 	}
+
 	@Test
 	void removeIteratorTest() {
 		final Iterator <Integer> it = collection.iterator();
-		assertThrowsExactly(IllegalStateException.class, ()->it.remove());
+		assertThrowsExactly(IllegalStateException.class, () -> it.remove());
 		Integer num = it.next();
 		assertTrue(collection.contains(num));
 		it.remove();
 		assertFalse(collection.contains(num));
-		
-		assertThrowsExactly(IllegalStateException.class, ()->it.remove());
+		assertEquals(numbers.length - 1, collection.size());
+		assertThrowsExactly(IllegalStateException.class, () -> it.remove());
 		Iterator<Integer> it1 = collection.iterator();
-		
-		while(it1.hasNext()) {
+		while (it1.hasNext()) {
 			num = it1.next();
 		}
 		assertTrue(collection.contains(num));
 		it1.remove();
 		assertFalse(collection.contains(num));
-		
-		
 	}
+	
 	@Test
 	void nextExceptionIteratorTest() {
 		Iterator <Integer> it = collection.iterator();
@@ -118,5 +141,7 @@ public abstract class CollectionTest {
 		}
 		assertThrowsExactly(NoSuchElementException.class, () -> it.next());
 	}
+	
+	
 
 }

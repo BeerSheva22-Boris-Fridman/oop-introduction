@@ -2,15 +2,15 @@ package telran.util.test;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import telran.util.*;
+import telran.util.HashMap;
 
-class ArrayListTest extends ListTest{
+public class HashMapTest extends MapTest {
+	
 	@BeforeEach
-	@Override 
+	@Override
 	void setUp() throws Exception {
-		collection = new ArrayList<>(2);
+		map = new HashMap<>();
 		super.setUp();
 	}
-	
-	
+
 }

@@ -16,7 +16,7 @@ public class HashSetTest extends SetTest {
 	private static final int N_NUMBERS = 100000;
 
 	@BeforeEach
-	@Override 
+	@Override
 	void setUp() throws Exception {
 		collection = new HashSet<>(4, 0.75f);
 		super.setUp();
@@ -25,10 +25,10 @@ public class HashSetTest extends SetTest {
 	@Override
 	@Test
 	void testIterator() {
-		
+
 		Predicate<Integer> allPredicate = n -> true;
 		HashSet<Integer> set = new HashSet<>();
-		fillSet(set, new Integer[] {0, 16, 32, 48, 512, 128});
+		fillSet(set, new Integer[] { 0, 16, 32, 48, 512, 128 });
 		set.removeIf(allPredicate);
 		assertTrue(set.isEmpty());
 		for (int i = 0; i < N_RUNS; i++) {
@@ -36,23 +36,23 @@ public class HashSetTest extends SetTest {
 			fillSet(set, bigArray);
 			set.removeIf(allPredicate);
 			assertTrue(set.isEmpty());
-			
+
 		}
-		
+
 	}
 
 	private Integer[] getRandomArray() {
 		Integer result[] = new Integer[N_NUMBERS];
-		for(int i = 0; i < N_NUMBERS; i++) {
+		for (int i = 0; i < N_NUMBERS; i++) {
 			result[i] = random.nextInt();
 		}
 		return result;
 	}
 
 	private void fillSet(HashSet<Integer> set, Integer[] numbers) {
-		for(Integer num: numbers) {
+		for (Integer num : numbers) {
 			set.add(num);
 		}
-		
+
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 public class StandardTreeSet<T> implements Sorted<T> {
+	
 	private java.util.TreeSet<T> tree;
 	public StandardTreeSet(Comparator<T> comp) {
 		tree = new java.util.TreeSet<>(comp);
@@ -11,7 +12,6 @@ public class StandardTreeSet<T> implements Sorted<T> {
 	public StandardTreeSet() {
 		this((Comparator<T>) Comparator.naturalOrder());
 	}
-	
 
 	@Override
 	public boolean add(T element) {
@@ -71,6 +71,10 @@ public class StandardTreeSet<T> implements Sorted<T> {
 	public T last() {
 		
 		return tree.last();
+	}
+	@Override
+	public T get(T pattern) {
+		throw new UnsupportedOperationException();
 	}
 
 }
